@@ -1,0 +1,12 @@
+#!ipxe
+
+set arch amd64
+set dist buster
+
+set base http://mirror.23m.com/debian/dists/${dist}/main/installer-${arch}/current/images/netboot/debian-installer/${arch}
+set firmware http://cdimage.debian.org/cdimage/unofficial/non-free/firmware/${dist}/current
+
+kernel ${base}/linux linitrd=initrd.gz initrd=firmware.cpio.gz locale=en_US.UTF-8 interface=auto hostname=localhost --
+initrd ${base}/initrd.gz
+initrd ${firmware}/firmware.cpio.gz
+boot

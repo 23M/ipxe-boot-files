@@ -1,0 +1,5 @@
+#!ipxe
+
+kernel http://boot.23m.com/memdisk raw
+initrd http://mirror.23m.com/grml/grml64-full_2021.07.iso
+boot

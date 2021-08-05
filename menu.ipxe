@@ -1,0 +1,87 @@
+#!ipxe
+
+# Some menu defaults
+set menu-timeout 10000
+set submenu-timeout ${menu-timeout}
+set menu-default exit
+
+###################### MAIN MENU ####################################
+
+:start
+menu 23M PXE Boot for Install and Maintenance
+item --gap --             ------------------------- Installers ------------------------------
+item centos7              CentOS 7 (manual installation)
+item centos7ks            CentOS 7 (Default 23M)
+item centos8              CentOS 8 (manual installation)
+item centos8ks            CentOS 8 (Default 23M)
+item debian10             Debian 10
+item ubuntu1804           Ubuntu 18.04 (LTS)
+item ubuntu2004           Ubuntu 20.04 (LTS)
+item --gap --             ------------------------- LiveCD ------------------------------
+item grml                 GRML
+item --gap --             ------------------------- Advanced options -------------------------------
+item --key c config       Configure settings
+item shell                Drop to iPXE shell
+item reload               Reload boot menu
+item reboot               Reboot computer
+item
+item --key x exit         Exit and continue BIOS boot
+choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
+set menu-timeout 0
+goto ${selected}
+
+:cancel
+echo You cancelled the menu, dropping you to a shell
+
+:reload
+chain -ar menu.ipxe
+
+:shell
+echo Type 'exit' to get the back to the menu
+shell
+set menu-timeout 0
+set submenu-timeout 0
+goto start
+
+:failed
+echo Booting failed, dropping to shell
+goto shell
+
+:reboot
+reboot
+
+:exit
+exit
+
+:config
+config
+goto start
+
+:error
+echo An error occured, press any key to return to menu ...
+prompt
+goto start
+
+:centos7
+chain os/centos7.ipxe || goto error
+
+:centos7ks
+chain os/centos7-ks.ipxe || goto error
+
+:centos8
+chain os/centos8.ipxe || goto error
+
+:centos8ks
+chain os/centos8-ks.ipxe || goto error
+
+:debian10
+chain os/debian10.ipxe || goto error
+
+:grml
+chain os/grml.ipxe || goto error
+
+:ubuntu1804
+chain os/ubuntu1804.ipxe || goto error
+
+:ubuntu2004
+chain os/ubuntu2004.ipxe || goto error

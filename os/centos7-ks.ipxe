@@ -1,0 +1,7 @@
+#!ipxe
+
+set base http://mirror.23m.com/centos/7/os/x86_64
+
+kernel ${base}/images/pxeboot/vmlinuz initrd=initrd.img repo=${base} inst.ks=http://boot.23m.com/ks/centos7.cfg
+initrd ${base}/images/pxeboot/initrd.img
+boot
