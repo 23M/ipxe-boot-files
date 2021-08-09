@@ -10,6 +10,7 @@ set menu-default exit
 :start
 menu 23M PXE Boot for Install and Maintenance
 item --gap --             ------------------------- Installers ------------------------------
+item almalinux            AlmaLinux (manual installation)
 item centos7              CentOS 7 (manual installation)
 item centos7ks            CentOS 7 (Default 23M)
 item centos8              CentOS 8 (manual installation)
@@ -61,6 +62,9 @@ goto start
 echo An error occured, press any key to return to menu ...
 prompt
 goto start
+
+:almalinux
+chain os/almalinux.ipxe || goto error
 
 :centos7
 chain os/centos7.ipxe || goto error
