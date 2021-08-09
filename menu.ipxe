@@ -16,10 +16,11 @@ item centos7ks            CentOS 7 (Default 23M)
 item centos8              CentOS 8 (manual installation)
 item centos8ks            CentOS 8 (Default 23M)
 item debian10             Debian 10
+item freebsd13            FreeBSD 13
 item ubuntu1804           Ubuntu 18.04 (LTS)
 item ubuntu2004           Ubuntu 20.04 (LTS)
 item --gap --             ------------------------- LiveCD ------------------------------
-item grml                 GRML
+item grml                 GRML (latest)
 item --gap --             ------------------------- Advanced options -------------------------------
 item --key c config       Configure settings
 item shell                Drop to iPXE shell
@@ -80,6 +81,9 @@ chain os/centos8-ks.ipxe || goto error
 
 :debian10
 chain os/debian10.ipxe || goto error
+
+:freebsd13
+chain os/freebsd13.ipxe || goto error
 
 :grml
 chain os/grml.ipxe || goto error
