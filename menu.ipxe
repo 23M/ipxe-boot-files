@@ -1,7 +1,7 @@
 #!ipxe
 
 # Some menu defaults
-set menu-timeout 10000
+set menu-timeout 12000
 set submenu-timeout ${menu-timeout}
 set menu-default exit
 
@@ -9,19 +9,13 @@ set menu-default exit
 
 :start
 menu 23M PXE Boot for Install and Maintenance
-item --gap --             ------------------------- Installers ------------------------------
-item almalinux            AlmaLinux (manual installation)
-item centos7              CentOS 7 (manual installation)
-item centos7ks            CentOS 7 (Default 23M)
-item centos8              CentOS 8 (manual installation)
-item centos8ks            CentOS 8 (Default 23M)
-item debian10             Debian 10
+item --gap --             ------------------------- Installers --------------------------
+item --key a lnxauto      Linux choices (automated installation)
+item --key m lnxman       Linux choices (manual installation)
 item freebsd13            FreeBSD 13
-item ubuntu1804           Ubuntu 18.04 (LTS)
-item ubuntu2004           Ubuntu 20.04 (LTS)
 item --gap --             ------------------------- LiveCD ------------------------------
 item grml                 GRML (latest)
-item --gap --             ------------------------- Advanced options -------------------------------
+item --gap --             ------------------------- Advanced options --------------------
 item --key c config       Configure settings
 item shell                Drop to iPXE shell
 item reload               Reload boot menu
@@ -30,6 +24,29 @@ item
 item --key x exit         Exit and continue BIOS boot
 choose --timeout ${menu-timeout} --default ${menu-default} selected || goto cancel
 set menu-timeout 0
+goto ${selected}
+
+:lnxauto
+menu 23M PXE Boot > Linux (automated)
+item centos7ks             CentOS 7 (Default 23M)
+item --key c centos8ks     CentOS 8 (Default 23M)
+item
+item start                 Go back
+choose selected || goto cancel
+goto ${selected}
+
+:lnxman
+menu 23M PXE Boot > Linux (manual)
+item --key a almalinux     AlmaLinux
+item centos7               CentOS 7
+item --key c centos8       CentOS 8
+item debian10              Debian 10
+item --key d debian11      Debian 11
+item ubuntu1804            Ubuntu 18.04 (LTS)
+item --key u ubuntu2004    Ubuntu 20.04 (LTS)
+item
+item start                 Go back
+choose selected || goto cancel
 goto ${selected}
 
 :cancel
@@ -60,7 +77,7 @@ config
 goto start
 
 :error
-echo An error occured, press any key to return to menu ...
+echo An error occurred, press any key to return to menu ...
 prompt
 goto start
 
@@ -81,6 +98,9 @@ chain os/centos8-ks.ipxe || goto error
 
 :debian10
 chain os/debian10.ipxe || goto error
+
+:debian11
+chain os/debian11.ipxe || goto error
 
 :freebsd13
 chain os/freebsd13.ipxe || goto error
