@@ -6,9 +6,8 @@ set arch amd64
 set dist focal
 
 set base http://mirror.23m.com/ubuntu/dists/${dist}/main/installer-${arch}/current/legacy-images/netboot/ubuntu-installer/${arch}
-set firmware http://cdimage.debian.org/cdimage/unofficial/non-free/firmware/stable/current
 
-kernel ${base}/linux linitrd=initrd.gz linitrd=firmware.cpio.gz locale=en_US.UTF-8 interface=auto ip=dhcp --
+kernel ${base}/linux
 initrd ${base}/initrd.gz
-initrd ${firmware}/firmware.cpio.gz
+imgargs linux initrd=initrd.gz boot=casper locale=en_US.UTF-8 interface=auto ip=dhcp --
 boot

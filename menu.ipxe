@@ -30,6 +30,10 @@ goto ${selected}
 menu 23M PXE Boot > Linux (automated)
 item centos7ks             CentOS 7 (Default 23M)
 item --key c centos8ks     CentOS 8 (Default 23M)
+item debian10ps            Debian 10 (Default 23M)
+item --key d debian11ps    Debian 11 (Default 23M)
+item ubuntu1804ps          Ubuntu 18.04 (LTS) (Default 23M)
+item --key u ubuntu2004ps  Ubuntu 20.04 (LTS) (Default 23M)
 item
 item start                 Go back
 choose selected || goto cancel
@@ -102,6 +106,9 @@ chain os/debian10.ipxe || goto error
 :debian11
 chain os/debian11.ipxe || goto error
 
+:debian11ps
+chain os/debian11-ps.ipxe || goto error
+
 :freebsd13
 chain os/freebsd13.ipxe || goto error
 
@@ -111,5 +118,11 @@ chain os/grml.ipxe || goto error
 :ubuntu1804
 chain os/ubuntu1804.ipxe || goto error
 
+:ubuntu1804ps
+chain os/ubuntu1804-ps.ipxe || goto error
+
 :ubuntu2004
 chain os/ubuntu2004.ipxe || goto error
+
+:ubuntu2004ps
+chain os/ubuntu2004-ps.ipxe || goto error

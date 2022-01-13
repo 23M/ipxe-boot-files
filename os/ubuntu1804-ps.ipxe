@@ -1,0 +1,14 @@
+#!ipxe
+
+cpuid --ext 29
+
+set arch amd64
+set dist bionic
+
+set base http://mirror.23m.com/ubuntu/dists/${dist}-updates/main/installer-${arch}/current/images/netboot/ubuntu-installer/${arch}
+
+kernel ${base}/linux
+initrd ${base}/initrd.gz
+imgargs linux initrd=initrd.gz boot=casper locale=en_US.UTF-8 netcfg/choose_interface=enp1s0f1 netcfg/link_wait_timeout=10 hostname=localhost keymap=de auto url=http://boot.23m.com/ps/ubuntu.cfg
+# ^ for some reason DHCP fails under Ubuntu if the interface is not specified here
+boot
